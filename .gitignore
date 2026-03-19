@@ -15,5 +15,6 @@ problem_df.py
 test.py
 task.md
 .DS_Store
+catboost_info/
 test.ipynb
 StudentPerformanceFactors.csv
