@@ -13,6 +13,7 @@ class EDA:
         self.df = df.convert_dtypes()
         self.shape = self.df.shape
         self.describe = self.df.describe()
+        self.unique = self.df.nunique()
         self.null_value = self.df.isna().sum()
         self.null_percent = (self.df.isna().mean() * 100).sort_values(ascending=False)
         self.numeric = self.df.select_dtypes(include=['number']).columns.tolist()
@@ -29,7 +30,7 @@ class EDA:
         
         Only numeric type
         """
-        df_numeric = df.select_dtypes(include=[np.number])
+        df_numeric = df.select_dtypes(include=['number'])
         corr = df_numeric.corr()
         mask = np.triu(np.ones_like(corr, dtype=bool))
         filtered = (
@@ -48,8 +49,8 @@ class EDA:
         return filtered.sort_values(by="correlation", key=abs, ascending=False)
 
 
-    def head(self, n: int) -> None:
-        print(self.df.head(n))
+    def head(self, n: int = 5) -> DataFrame:
+        return self.df.head(n)
 
 
     def missing_report(self):
@@ -65,6 +66,9 @@ class EDA:
         print()
         print(f'Describe:')
         print(self.describe)
+        print()
+        print(f'Unique values')
+        print(self.unique)
         print()
         print(f'N/A values:')
         print(self.null_value)
@@ -116,7 +120,7 @@ class EDA:
         1. Missing values
         2. Zero variance
         3. Correlation
-        4. Encoding
+        4. Encoding (текущая активность)
         5. Emissions
 
         """

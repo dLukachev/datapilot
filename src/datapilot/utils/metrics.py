@@ -22,3 +22,11 @@ class Metrics():
         except Exception as e:
             raise e
         return (mae, rmse, mape, r2)
+    
+
+    @staticmethod
+    def linear_plot():
+        """
+        Принимает y-true и y-pred и рисует разброс ошибки на графике scatterplot
+        """
+        ...
