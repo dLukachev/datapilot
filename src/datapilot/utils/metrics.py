@@ -7,11 +7,11 @@ class Metrics():
         pass
     
     @staticmethod
-    def linear_report(y_true: ArrayLike, y_pred: ArrayLike) -> tuple[float, float, float, float]:
+    def linear_report(y_true: ArrayLike, y_pred: ArrayLike) -> tuple[tuple[float, float, float, float], tuple[str]]:
         """
         Only linear report. For classification use 'from sklearn.metrics import classification_report'
         
-        **return** tuple(mae, rmse, mape, r2)
+        **return** tuple((mae, rmse, mape, r2), (f'MAE: {mae}, RMSE: {rmse}, MAPE: {mape}, r2: {r2}',))
         """
         try:
             mae = mean_absolute_error(y_true, y_pred)
@@ -21,7 +21,7 @@ class Metrics():
             r2 = r2_score(y_true, y_pred)
         except Exception as e:
             raise e
-        return (mae, rmse, mape, r2)
+        return ((mae, rmse, mape, r2), (f'MAE: {mae}, RMSE: {rmse}, MAPE: {mape}, r2: {r2}',))
     
 
     @staticmethod

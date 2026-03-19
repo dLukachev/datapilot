@@ -120,7 +120,7 @@ class EDA:
         1. Missing values
         2. Zero variance
         3. Correlation
-        4. Encoding (текущая активность)
+        4. preprocessing
         5. Emissions
 
         """
