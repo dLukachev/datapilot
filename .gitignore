@@ -14,3 +14,4 @@ test_data/
 problem_df.py
 test.py
 task.md
+.DS_Store
