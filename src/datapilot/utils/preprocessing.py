@@ -37,18 +37,12 @@ def preprocessing(df: DataFrame | None = None,
         raise ValueError("df must be provided")
     
     df = df.copy()
-
-    if target is not None and target not in df.columns:
-        raise ValueError("target column not in dataframe")
     
     categorical_cols = []
     numeric_cols = []
 
     # --- 1. Определяем типы признаков ---
     for col in df.columns:
-        if col == target:
-            continue
-
         if df[col].nunique() <= uv:
             categorical_cols.append(col)
         else:
@@ -69,7 +63,7 @@ def preprocessing(df: DataFrame | None = None,
     if model_type == "linear" and scaler_columns:
         scaler = StandardScaler() if type_scaler == "standart" else MinMaxScaler()
 
-        cols_to_scale = [col for col in df.columns if col != target and col in scaler_columns]
+        cols_to_scale = [col for col in df.columns if col in scaler_columns]
 
         df[cols_to_scale] = scaler.fit_transform(df[cols_to_scale])
 
