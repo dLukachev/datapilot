@@ -1,5 +1,7 @@
 from numpy.typing import ArrayLike
+import numpy as np
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, roc_auc_score, mean_absolute_percentage_error, r2_score
+import matplotlib.pyplot as plt
 
 class Metrics():
 
@@ -25,8 +27,61 @@ class Metrics():
     
 
     @staticmethod
-    def linear_plot():
+    def linear_plot(
+        y_true: ArrayLike,
+        y_pred: ArrayLike,
+        figsize: tuple = (8, 6)
+    ) -> None:
         """
-        Принимает y-true и y-pred и рисует разброс ошибки на графике scatterplot
+        Scatter plot: y_true vs y_pred
+        цвет = абсолютная ошибка
         """
-        ...
+        try:
+            y_true = np.array(y_true)
+            y_pred = np.array(y_pred)
+
+            if y_true.shape != y_pred.shape:
+                raise ValueError("y_true and y_pred must have the same shape")
+
+            if len(y_true) == 0:
+                raise ValueError("Empty input arrays")
+
+            # удаляем NaN
+            mask = ~np.isnan(y_true) & ~np.isnan(y_pred)
+            y_true = y_true[mask]
+            y_pred = y_pred[mask]
+
+            errors = y_pred - y_true
+            abs_errors = np.abs(errors)
+
+            plt.figure(figsize=figsize)
+
+            scatter = plt.scatter(
+                y_true,
+                y_pred,
+                c=abs_errors,
+                alpha=0.7
+            )
+
+            # линия идеала
+            min_val = min(y_true.min(), y_pred.min())
+            max_val = max(y_true.max(), y_pred.max())
+
+            plt.plot(
+                [min_val, max_val],
+                [min_val, max_val],
+                linestyle="--"
+            )
+
+            plt.xlabel("y_true")
+            plt.ylabel("y_pred")
+            plt.title("Prediction vs True")
+
+            plt.colorbar(scatter, label="Absolute Error")
+
+            plt.grid(True)
+            plt.tight_layout()
+            plt.show()
+
+        except Exception as e:
+            raise ValueError(f"Error in linear_plot: {e}")
